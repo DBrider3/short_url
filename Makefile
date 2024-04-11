@@ -1,0 +1,26 @@
+.PHONY: start
+start:
+	@printf "[exec] Python Django Start!!!\n"; \
+	python manage.py runserver
+
+.PHONY: up
+up:
+	docker-compose -f deploy/local/docekr-compose.yml up -d
+
+.PHONY: down
+down:
+	docker-compose -f deploy/local/docekr-compose.yml down
+
+.PHONY: exec
+exec:
+	@docker compose -f deploy/local/docekr-compose.yml ps
+	@printf "[exec] 서비스 이름: "; \
+	read service; \
+	docker compose -f deploy/local/docekr-compose.yml exec $$service /bin/bash;
+
+.PHONY: volume
+volume:
+	@docker volume ls
+	@printf "[delete] 볼륨 이름: "; \
+	read volume; \
+	docker volume rm $$volume;
