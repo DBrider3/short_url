@@ -1,11 +1,9 @@
 """
     Copyright ⓒ 2024 Dcho, Inc. All Rights Reserved.
     Author : Dcho (tmdgns743@gmail.com)
-    Description : Short URL View
+    Description : User View
 """
 
 from django.shortcuts import render
 
-from rest_framework import viewsets
-
-# class TestViewSet(viewsets.views)
+# Create your views here.

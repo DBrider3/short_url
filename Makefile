@@ -5,18 +5,18 @@ start:
 
 .PHONY: up
 up:
-	docker-compose -f deploy/local/docekr-compose.yml up -d
+	docker-compose -f deploy/local/docker-compose.yml up -d
 
 .PHONY: down
 down:
-	docker-compose -f deploy/local/docekr-compose.yml down
+	docker-compose -f deploy/local/docker-compose.yml down
 
 .PHONY: exec
 exec:
-	@docker compose -f deploy/local/docekr-compose.yml ps
+	@docker compose -f deploy/local/docker-compose.yml ps
 	@printf "[exec] 서비스 이름: "; \
 	read service; \
-	docker compose -f deploy/local/docekr-compose.yml exec $$service /bin/bash;
+	docker compose -f deploy/local/docker-compose.yml exec $$service /bin/bash;
 
 .PHONY: volume
 volume:
