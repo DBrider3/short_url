@@ -56,9 +56,7 @@ class User(AbstractBaseUser, BaseModel, PermissionsMixin):
     시스템 내 개발 사용자를 나타내는 사용자 모델입니다.
     """
 
-    email = models.EmailField(
-        max_length=255, unique=True, verbose_name="사용자 이메일 주소"
-    )
+    email = models.EmailField(max_length=255, unique=True, verbose_name="사용자 이메일 주소")
     is_active = models.BooleanField(default=True, verbose_name="활성 사용자 여부")
     is_staff = models.BooleanField(default=False, verbose_name="어드민 여부")
 
