@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # Apps
     "app",
     "core",
+    "app.shortlinks",
 ]
 
 MIDDLEWARE = [
