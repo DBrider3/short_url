@@ -53,7 +53,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, BaseModel, PermissionsMixin):
     """
-    시스템 내 개발 사용자를 나타내는 사용자 모델입니다.
+    시스템 내 개발, 사용자를 나타내는 사용자 모델입니다.
     """
 
     email = models.EmailField(max_length=255, unique=True, verbose_name="사용자 이메일 주소")

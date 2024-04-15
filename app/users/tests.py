@@ -16,7 +16,7 @@ class UserTestCase(TestCase):
     """
 
     def test_create_user(self):
-        email = "tmdgns743@gmail.com"
+        email = "test@gmail.com"
         password = "password1234"
 
         user = get_user_model().objects.create_user(email=email, password=password)

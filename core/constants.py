@@ -19,6 +19,8 @@ class SERVICE:
 
     SECRET_KEY = os.getenv("SECRET_KEY")
     DEBUG = bool(os.getenv("DEBUG", False))
+    ACCESS_TOKEN_EXP_MIN = int(os.getenv("ACCESS_TOKEN_EXP_MIN"))
+    REFRESH_TOKEN_EXP_DAY = int(os.getenv("REFRESH_TOKEN_EXP_DAY"))
 
 
 class DATABASE:
@@ -31,3 +33,18 @@ class DATABASE:
     DB_PASSWORD = os.getenv("DB_PASSWORD")
     DB_HOST = os.getenv("DB_HOST")
     DB_PORT = os.getenv("DB_PORT")
+
+
+class SYSTEM_CODE:
+    """
+    각종 System Code
+    """
+
+    # 0~1000 Base
+    SUCCESS = (0, "SUCCESS")
+    BAD_REQUEST = (1, "BAD_REQUEST")
+    CLIENT_ERROR = (2, "CLIENT_ERROR")
+    INVALID_FORMAT = (3, "INVALID_FORMAT")
+
+    # 1001 ~ 2000 Auth
+    EMAIL_ALREADY = (1001, "EMAIL_ALREADY")

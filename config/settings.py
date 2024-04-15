@@ -136,3 +136,10 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# TODO: SLASH 처리
+APPEND_SLASH = False
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ["config.authentication.CustomJWTAuthentication"],  # 커스텀 JWT 인증 클래스 사용
+}

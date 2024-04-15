@@ -4,9 +4,15 @@
     Description : User Url
 """
 
+# System
 from django.urls import path, include
 
-auth_urls = []
+# Project
+from app.users.views import (
+    RegisterView,
+)
+
+auth_urls = [path("", view=RegisterView.as_view())]
 
 urlpatterns = [
     path("auth/", include(auth_urls)),
