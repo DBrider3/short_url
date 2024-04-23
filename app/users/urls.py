@@ -8,11 +8,12 @@
 from django.urls import path, include
 
 # Project
-from app.users.views import (
-    RegisterView,
-)
+from app.users.views import AuthViewSet
 
-auth_urls = [path("", view=RegisterView.as_view())]
+auth_urls = [
+    path("", view=AuthViewSet.as_view({"post": "login"})),
+    path("registration", view=AuthViewSet.as_view({"post": "register"})),
+]
 
 urlpatterns = [
     path("auth/", include(auth_urls)),

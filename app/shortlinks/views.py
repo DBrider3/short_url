@@ -4,8 +4,13 @@
     Description : Short URL View
 """
 
-from django.shortcuts import render
+# System
+from django.shortcuts import redirect
+from rest_framework.viewsets import ViewSet
+from rest_framework.permissions import IsAuthenticated  # 권한 부여
 
-from rest_framework import viewsets
 
-# class TestViewSet(viewsets.views)
+# class ShortURL(ViewSet):
+
+#     permission_classes = [IsAuthenticated]
+#     def test(request)

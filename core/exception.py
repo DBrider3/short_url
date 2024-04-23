@@ -21,7 +21,7 @@ class CustomAPIException(APIException):
     def __init__(self, **kwargs):
         self.status_code = kwargs.get("status", status.HTTP_400_BAD_REQUEST)
         self.code = kwargs.get("code", SYSTEM_CODE.CLIENT_ERROR)
-        self.detail = kwargs.get("detail", "오류가 발생했습니다.")
+        self.detail = self.code[1] if self.code != SYSTEM_CODE.CLIENT_ERROR else "오류가 발생했습니다."
 
 
 def raise_exception(**kwargs):

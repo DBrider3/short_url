@@ -5,10 +5,9 @@
 """
 
 # System
-from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated  # 권한 부여
 
 
 # Project
@@ -18,21 +17,58 @@ from core.exception import raise_exception
 from app.users.models import User
 from app.users.serializers import (
     RegisterSerializer,
+    LoginSerializer,
 )
 
 
-class RegisterView(APIView):
-    def post(self, request):
+class AuthViewSet(ViewSet):
+    """
+    회원가입, 로그인에 관한 ViewSet
+    """
 
+    def register(self, request):
         serializer = RegisterSerializer(data=request.data)
 
         if not serializer.is_valid():
-            raise_exception(code=SYSTEM_CODE.INVALID_FORMAT)
+            raise_exception(code=SYSTEM_CODE.INVALID_FORMAT, detail=SYSTEM_CODE.INVALID_FORMAT[1])
 
         email = serializer.validated_data["email"]
         password = serializer.validated_data["password"]
 
         user = User.objects.create_user(email, password)
+
+        access_token = create_token(user=user, type="access")
+        refresh_token = create_token(user=user, type="refresh")
+
+        data = {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+        }
+
+        return Response(data=data, status=201)
+
+    def login(self, request):
+        serializer = LoginSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            raise_exception(code=SYSTEM_CODE.INVALID_FORMAT, detail=SYSTEM_CODE.INVALID_FORMAT[1])
+
+        email = serializer.validated_data["email"]
+        password = serializer.validated_data["password"]
+
+        user = User.objects.filter(email=email).first()
+
+        # 존재 하지 않는 유저
+        if not user:
+            raise_exception(code=SYSTEM_CODE.USER_NOT_FOUND)
+
+        # 비밀번호 불일치
+        if not user.check_password(raw_password=password):
+            raise_exception(code=SYSTEM_CODE.USER_INVALID_PW)
+
+        # 활성화 되지 않는 유저
+        if not user.is_active:
+            raise_exception(code=SYSTEM_CODE.USER_NOT_ACTIVE)
 
         access_token = create_token(user=user, type="access")
         refresh_token = create_token(user=user, type="refresh")

@@ -10,4 +10,7 @@ shortlinks_urls = []
 
 urlpatterns = [
     path("shorturl/", include(shortlinks_urls)),
+    path(
+        "",
+    ),
 ]
