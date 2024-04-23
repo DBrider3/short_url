@@ -34,7 +34,8 @@ class CustomJWTAuthentication(BaseAuthentication):
 
         try:
             decoded = jwt.decode(access_token, settings.SECRET_KEY, algorithms=["HS256"])
-            user_id = decoded.get("id")
+
+            user_id = decoded.get("user_id")
 
             if not user_id:
                 raise AuthenticationFailed("Invalid Token")

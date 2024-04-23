@@ -5,7 +5,7 @@
 """
 
 # System
-from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 
@@ -45,7 +45,7 @@ class AuthViewSet(ViewSet):
             "refresh_token": refresh_token,
         }
 
-        return Response(data=data, status=201)
+        return Response(data=data, status=status.HTTP_201_CREATED)
 
     def login(self, request):
         serializer = LoginSerializer(data=request.data)
@@ -78,4 +78,4 @@ class AuthViewSet(ViewSet):
             "refresh_token": refresh_token,
         }
 
-        return Response(data=data, status=200)
+        return Response(data=data, status=status.HTTP_200_OK)

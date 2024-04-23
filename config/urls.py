@@ -4,11 +4,15 @@
     Description : Root Urls
 """
 
+# System
 from django.contrib import admin
 from django.urls import path, include
+
+# Project
+from app.shortlinks.views import ShortURLViewSet
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("app.users.urls")),
-    # path("api/", include("app.shortlinks.urls")),
+    path("api/", include("app.shortlinks.urls")),
 ]
