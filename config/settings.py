@@ -5,6 +5,7 @@
 """
 
 # System
+from datetime import datetime
 import os
 from pathlib import Path
 from core.constants import SERVICE, DATABASE
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third-Party Apps
     "rest_framework",
+    "django_crontab",
     # Apps
     "app",
     "core",
@@ -143,3 +145,12 @@ APPEND_SLASH = False
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ["config.authentication.CustomJWTAuthentication"],  # 커스텀 JWT 인증 클래스 사용
 }
+
+# Crontab
+CRONJOBS = [
+    (
+        "*/1 * * * *",
+        "core.cron.handle_expired_shortlinks",
+        ">> " + os.path.join(BASE_DIR, f'log/cron_{datetime.now().strftime("%Y-%m-%d")}.log'),
+    ),
+]

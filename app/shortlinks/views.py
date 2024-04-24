@@ -53,6 +53,7 @@ class ShortURLViewSet(ViewSet):
             raise_exception(code=SYSTEM_CODE.INVALID_FORMAT, detail=SYSTEM_CODE.INVALID_FORMAT[1])
 
         url = serializer.validated_data["url"]
+        expiration_date = serializer.validated_data.get("expiration_date")
 
         # 회원이 가지고 있는 url이 있는지 확인
         origin_url = Shortlink.objects.filter(url=url, user=user, deleted_at=None).first()
@@ -60,10 +61,14 @@ class ShortURLViewSet(ViewSet):
         if not origin_url:
             new_url = Shortlink.objects.create(url=url, user=request.user)
             new_url.encoded = base62.encode(new_url.id)
+            if expiration_date is not None:
+                new_url.expiration_date = expiration_date
             new_url.save()
             result_encoded = new_url.encoded
         else:
             origin_url.encoded = base62.encode(origin_url.id)
+            if expiration_date is not None:
+                origin_url.expiration_date = expiration_date
             origin_url.save()
             result_encoded = origin_url.encoded
 

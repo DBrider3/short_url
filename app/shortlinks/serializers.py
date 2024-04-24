@@ -15,6 +15,7 @@ from app.shortlinks.models import Shortlink
 
 class GenerateSerializer(serializers.Serializer):
     url = serializers.URLField(required=True)
+    expiration_date = serializers.DateTimeField(required=False)
 
 
 class RedirectSerializer(serializers.Serializer):
