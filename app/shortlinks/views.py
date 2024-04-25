@@ -32,8 +32,9 @@ class ShortURLViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_user_short_url(self, request):
-
-        user = request.user
+        """
+        단축 url들을 조회한다.
+        """
 
         short_url = Shortlink.objects.filter(user=request.user, deleted_at=None).order_by("-created_at")
 
@@ -44,11 +45,14 @@ class ShortURLViewSet(ViewSet):
         return Response(data=data, status=status.HTTP_200_OK)
 
     def generate_short_url(self, request):
-
+        """
+        단축 url을 생성한다.
+        """
         user = request.user
 
         serializer = GenerateSerializer(data=request.data)
 
+        # Validation Check
         if not serializer.is_valid():
             raise_exception(code=SYSTEM_CODE.INVALID_FORMAT, detail=SYSTEM_CODE.INVALID_FORMAT[1])
 
@@ -58,15 +62,19 @@ class ShortURLViewSet(ViewSet):
         # 회원이 가지고 있는 url이 있는지 확인
         origin_url = Shortlink.objects.filter(url=url, user=user, deleted_at=None).first()
         result_encoded = ""
+
+        # 새로운 url인지 기존 url 인지 분기 처리
         if not origin_url:
             new_url = Shortlink.objects.create(url=url, user=request.user)
             new_url.encoded = base62.encode(new_url.id)
+            # 만료기한 있을시 저장
             if expiration_date is not None:
                 new_url.expiration_date = expiration_date
             new_url.save()
             result_encoded = new_url.encoded
         else:
             origin_url.encoded = base62.encode(origin_url.id)
+            # 만료기한 있을시 저장
             if expiration_date is not None:
                 origin_url.expiration_date = expiration_date
             origin_url.save()
@@ -77,15 +85,23 @@ class ShortURLViewSet(ViewSet):
         return Response(data=data, status=status.HTTP_201_CREATED)
 
     def redirect_short_url(self, request):
-
+        """
+        단축 url redirect 처리 한다.
+        """
         serializer = RedirectSerializer(data=request.data)
 
+        # Validation Check
         if not serializer.is_valid():
             raise_exception(code=SYSTEM_CODE.INVALID_FORMAT, detail=SYSTEM_CODE.INVALID_FORMAT[1])
 
         encoded = serializer.validated_data["encoded"]
 
-        short_url = Shortlink.objects.filter(encoded=encoded, user=request.user, deleted_at=None).first()
+        short_url = Shortlink.objects.filter(
+            encoded=encoded,
+            user=request.user,
+            deleted_at=None,
+            expiration_date__gte=datetime.now(),
+        ).first()
 
         if not short_url:
             raise_exception(
@@ -96,8 +112,10 @@ class ShortURLViewSet(ViewSet):
         return redirect(short_url.url)
 
     def delete_user_short_url(self, request, short_url_id):
-
-        short_url = Shortlink.objects.filter(user=request.user, deleted_at=None).first()
+        """
+        단축 url를 삭제한다.
+        """
+        short_url = Shortlink.objects.filter(id=short_url_id, user=request.user, deleted_at=None).first()
 
         if not short_url:
             raise_exception(

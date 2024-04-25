@@ -12,8 +12,12 @@ from core.models import BaseModel
 
 
 class Shortlink(BaseModel):
-    url = models.URLField(verbose_name="url")
-    encoded = models.CharField(max_length=100, verbose_name="Short url")
+    """
+    Short URL 모델입니다.
+    """
+
+    url = models.URLField(verbose_name="origin url")
+    encoded = models.CharField(max_length=100, verbose_name="short url")
     expiration_date = models.DateTimeField(null=True, blank=True, verbose_name="만료일시")
     deleted_at = models.DateTimeField(null=True, blank=True, verbose_name="삭제일시")
 

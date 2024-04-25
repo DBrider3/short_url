@@ -12,6 +12,9 @@ from app.shortlinks.models import Shortlink
 
 
 def handle_expired_shortlinks():
+    """
+    단축 url 00시에 만료된것들 삭제 처리한다.
+    """
     # 현재 시간 기준으로 만료된 shortlink 객체를 찾습니다.
     expired_links = Shortlink.objects.filter(deleted_at=None, expiration_date__lt=datetime.now())
 

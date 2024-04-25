@@ -14,8 +14,12 @@ from app.users.models import User
 
 
 class RegisterSerializer(serializers.Serializer):
-    email = serializers.EmailField(max_length=255, required=True)
-    password = serializers.CharField(max_length=128, required=True)
+    """
+    회원가입 시리얼라이저
+    """
+
+    email = serializers.EmailField(max_length=255, required=True, label="이메일")
+    password = serializers.CharField(max_length=128, required=True, label="패스워드")
 
     def validate_email(self, value):
         """
@@ -27,5 +31,9 @@ class RegisterSerializer(serializers.Serializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(max_length=255, required=True)
-    password = serializers.CharField(max_length=128, required=True)
+    """
+    로그인 시리얼라이저
+    """
+
+    email = serializers.EmailField(max_length=255, required=True, label="이메일")
+    password = serializers.CharField(max_length=128, required=True, label="패스워드")

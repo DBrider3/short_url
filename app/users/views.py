@@ -27,6 +27,9 @@ class AuthViewSet(ViewSet):
     """
 
     def register(self, request):
+        """
+        회원가입
+        """
         serializer = RegisterSerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -48,6 +51,9 @@ class AuthViewSet(ViewSet):
         return Response(data=data, status=status.HTTP_201_CREATED)
 
     def login(self, request):
+        """
+        로그인
+        """
         serializer = LoginSerializer(data=request.data)
 
         if not serializer.is_valid():

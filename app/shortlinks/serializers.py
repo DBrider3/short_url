@@ -5,21 +5,19 @@
 """
 
 # System
-from rest_framework import serializers, status
+from rest_framework import serializers
 
 # Project
-from core.constants import SYSTEM_CODE
-from core.exception import raise_exception
 from app.shortlinks.models import Shortlink
 
 
 class GenerateSerializer(serializers.Serializer):
-    url = serializers.URLField(required=True)
-    expiration_date = serializers.DateTimeField(required=False)
+    url = serializers.URLField(required=True, label="기존 url")
+    expiration_date = serializers.DateTimeField(required=False, label="만료기한")
 
 
 class RedirectSerializer(serializers.Serializer):
-    encoded = serializers.CharField(max_length=100, required=True)
+    encoded = serializers.CharField(max_length=100, required=True, label="단축url코드")
 
 
 class ShortURLSerializer(serializers.ModelSerializer):
