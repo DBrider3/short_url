@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # Third-Party Apps
     "rest_framework",
     "django_crontab",
+    "drf_spectacular",
     # Apps
     "app",
     "core",
@@ -144,6 +145,13 @@ APPEND_SLASH = False
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ["config.authentication.CustomJWTAuthentication"],  # 커스텀 JWT 인증 클래스 사용
+    # "EXCEPTION_HANDLER": "core.exception.custom_exception_handler",  # 예외 처리기 설정
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",  # Swagger 셋팅
+    "DEFAULT_PARSER_CLASSES": [  # 요청 본문을 파싱하는 데  사용할 파서를 지정
+        "rest_framework.parsers.JSONParser",  # JSON 파서
+    ],
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "DEFAULT_RESPONSE_CLASS": "core.response.CustomResponse",
 }
 
 # Crontab
@@ -154,3 +162,20 @@ CRONJOBS = [
         ">> " + os.path.join(BASE_DIR, f'log/cron_{datetime.now().strftime("%Y-%m-%d")}.log'),
     ),
 ]
+
+
+# Swagger
+SPECTACULAR_SETTINGS = {
+    "TITLE": "단축 URL API",
+    "DESCRIPTION": "단축 URL API Swagger 문서 입니다.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
+    # available SwaggerUI versions: https://github.com/swagger-api/swagger-ui/releases
+    "SWAGGER_UI_DIST": "https://cdn.jsdelivr.net/npm/swagger-ui-dist@latest",  # default
+}
